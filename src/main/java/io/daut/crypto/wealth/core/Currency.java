@@ -9,27 +9,20 @@ public enum Currency {
     EUR("EUR"),
     XRP("XRP");
 
-    private final String value;
+    private final String code;
 
-    Currency(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
+    Currency(String code) {
+        this.code = code;
     }
 
     public static Currency from(String currency) {
         return Arrays.stream(Currency.values())
-                .filter(c -> currency.equalsIgnoreCase(c.getValue()))
+                .filter(c -> c.getCode().equalsIgnoreCase(currency))
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("Currency '" + currency + "' not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Could not find Currency '" + currency + "'"));
     }
 
-    @Override
-    public String toString() {
-        return "Currency{" +
-                "value='" + value + '\'' +
-                '}';
+    public String getCode() {
+        return code;
     }
 }

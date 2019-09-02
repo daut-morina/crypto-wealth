@@ -1,4 +1,4 @@
-package io.daut.crypto.wealth.outbound.exchange;
+package io.daut.crypto.wealth.outbound.exchange.rate.crypto.compare;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLParameters;

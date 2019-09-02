@@ -1,4 +1,4 @@
-package io.daut.crypto.wealth.outbound.exchange;
+package io.daut.crypto.wealth.outbound.exchange.rate.crypto.compare;
 
 import javax.net.ssl.SSLSession;
 import java.net.URI;
@@ -31,7 +31,7 @@ public class MockHttpResponse implements HttpResponse<String> {
 
     @Override
     public String body() {
-        return "{\"EUR\":9048.21}";
+        return "{\"EUR\":9157.7}";
     }
 
     @Override

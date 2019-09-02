@@ -1,14 +1,16 @@
 package io.daut.crypto.wealth.core;
 
+import java.math.BigDecimal;
+
 public class Money {
     private final Currency currency;
-    private final double value;
+    private final BigDecimal value;
 
-    public Money(Currency currency, double value) {
-        if (currency == null) throw new IllegalArgumentException("'currency' must not be null");
+    public Money(Currency currency, BigDecimal value) {
+        assert currency != null;
         this.currency = currency;
 
-        if (value < 0) throw new IllegalArgumentException("'value' must not be negative");
+        assert value != null;
         this.value = value;
     }
 
@@ -16,15 +18,7 @@ public class Money {
         return currency;
     }
 
-    public double getValue() {
+    public BigDecimal getValue() {
         return value;
-    }
-
-    @Override
-    public String toString() {
-        return "Money{" +
-                "currency=" + currency +
-                ", value=" + value +
-                '}';
     }
 }
