@@ -3,39 +3,40 @@
  */
 package io.daut.crypto.wealth;
 
-import io.daut.crypto.wealth.core.*;
-import io.daut.crypto.wealth.inbound.FortuneFile;
-import io.daut.crypto.wealth.outbound.exchange.CryptoCompareClient;
-import io.daut.crypto.wealth.outbound.exchange.CryptoCompareExchangeService;
-import io.daut.crypto.wealth.outbound.printer.ConsolePrintService;
+//import io.daut.crypto.wealth.outbound.quote.CryptoCompareClient;
+//import io.daut.crypto.wealth.outbound.quote.CryptoCompareExchangeService;
+//import io.daut.crypto.wealth.outbound.print.ConsolePrintService;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import io.daut.crypto.wealth.core.ReportService;
+import io.daut.crypto.wealth.inbound.ArgumentParser;
+import io.daut.crypto.wealth.inbound.Arguments;
+import io.daut.crypto.wealth.inbound.FileInput;
+import io.daut.crypto.wealth.outbound.exchange.rate.crypto.compare.CryptoCompareClient;
+import io.daut.crypto.wealth.outbound.exchange.rate.crypto.compare.CryptoCompareExchangeRateService;
+import io.daut.crypto.wealth.outbound.print.console.console.ConsolePrintService;
+
 import java.io.IOException;
 import java.net.http.HttpClient;
-import java.util.List;
 
 public class App {
-    public final static String FILE_PATH = "./src/main/resources/bobs_crypto.txt";
-
     public static void main(String[] args) throws IOException {
         // OUTBOUND
         final HttpClient httpClient = HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_2)
                 .build();
-        final CryptoCompareClient cryptoCompareClient = new CryptoCompareClient(httpClient);
-        final CryptoCompareExchangeService exchangeService = new CryptoCompareExchangeService(cryptoCompareClient);
+        final CryptoCompareClient cryptoCompareClient = CryptoCompareClient.create(httpClient);
+        final CryptoCompareExchangeRateService exchangeRateService = CryptoCompareExchangeRateService.create(cryptoCompareClient);
         final ConsolePrintService printService = new ConsolePrintService();
 
         // CORE
-        final WealthReportService wealthReportService = new WealthReportService(exchangeService, printService);
+        final ReportService reportService = new ReportService(exchangeRateService, printService);
 
         // INBOUND
-        final BufferedReader bufferedReader = new BufferedReader(new FileReader(FILE_PATH));
-        final FortuneFile fortuneFile = new FortuneFile(bufferedReader);
-        final List<Money> fortune = fortuneFile.parseFortune();
+        final ArgumentParser argumentParser = ArgumentParser.create();
+        final Arguments arguments = argumentParser.parseArguments(args);
+        final FileInput fileInput = FileInput.create(reportService);
 
         // RUN
-        wealthReportService.calculateWealth(fortune);
+        fileInput.printReport(arguments);
     }
 }

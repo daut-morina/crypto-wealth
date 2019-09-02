@@ -1,22 +1,32 @@
 package io.daut.crypto.wealth.core;
 
+import java.util.List;
+
 public class ExchangeRateRequest {
-    private final Currency source;
+    private final List<Currency> sources;
     private final Currency target;
 
-    public ExchangeRateRequest(Currency source, Currency target) {
-        if (source == null) throw new IllegalArgumentException("'source' must not be null");
-        this.source = source;
+    public ExchangeRateRequest(List<Currency> sources, Currency target) {
+        assert sources != null;
+        this.sources = sources;
 
-        if (target == null) throw new IllegalArgumentException("'target' must not be null");
+        assert  target != null;
         this.target = target;
     }
 
-    public Currency getSource() {
-        return source;
+    public List<Currency> getSources() {
+        return sources;
     }
 
     public Currency getTarget() {
         return target;
+    }
+
+    @Override
+    public String toString() {
+        return "ExchangeRateRequest{" +
+                "sources=" + sources +
+                ", target=" + target +
+                '}';
     }
 }
